@@ -2,10 +2,10 @@ __pycache__/
 version.txt
 build/
 dist/
-Treasure Hunt Game.spec
 main.spec
 assets/treasure.png
 assets/player/player1.png
 assets/player/player2.png
 description.txt
 Presentation.docx
+TreasureHuntGame.spec
