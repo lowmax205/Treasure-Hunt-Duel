@@ -1,5 +1,6 @@
 __pycache__/
-mainpy.spec
 version.txt
 build/
 dist/
+Treasure Hunt Game.spec
+main.spec
