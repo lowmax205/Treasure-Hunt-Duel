@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import messagebox
 import random as rd
 from game_logic import TreasureHuntGameLogic
+from PIL import Image, ImageTk
+import sys
+import os
 
 # Constants
 LARGE_FONT = ("Helvetica", 16, "bold")
@@ -35,18 +38,38 @@ def show_instructions(self):
 
 
 def setup_ui(self):
-    # Title Label
-    tk.Label(self.root, text="Treasure Hunt Duel", font=LARGE_FONT).pack(pady=10)
+    # Title Label with design
+    tk.Label(
+        self.root,
+        text="Treasure Hunt Duel",
+        font=LARGE_FONT,
+        fg="gold",
+        bg="darkblue",
+    ).pack(pady=10)
 
-    # Instructions Button
+    # Description Label
+    tk.Label(
+        self.root,
+        text="A two-player game where players search for treasure hidden in a grid.",
+        font=MEDIUM_FONT,
+        wraplength=380,
+        justify="center",
+    ).pack(pady=5)
+
+    # Instructions Button with design
     tk.Button(
-        self.root, text="Instruction!", command=lambda: show_instructions(self)
+        self.root,
+        text="Instructions",
+        command=lambda: show_instructions(self),
+        font=MEDIUM_FONT,
+        bg="lightgreen",
+        fg="black",
     ).pack(anchor=tk.NE, padx=10, pady=10)
 
     # Mode Selection
-    mode_frame = tk.Frame(self.root)
+    mode_frame = tk.Frame(self.root, bg="lightgrey")
     mode_frame.pack(pady=5, anchor=tk.CENTER, expand=True)
-    tk.Label(mode_frame, text="Select Mode:").pack(pady=5)
+    tk.Label(mode_frame, text="Select Mode:", font=MEDIUM_FONT).pack(pady=5)
     self.mode_var = tk.StringVar(value="Classic")
     modes = ["Classic", "Advanced"]
     for mode in modes:
@@ -56,14 +79,20 @@ def setup_ui(self):
             variable=self.mode_var,
             value=mode,
             command=lambda: update_grid_size(self),
-        ).pack(anchor=tk.CENTER)
+            font=MEDIUM_FONT,
+            bg="lightgrey",
+        ).pack(anchor=tk.CENTER, side="left", padx=5)
 
     # Instructions
-    tk.Label(self.root, text="Players, select your grid cells:").pack(pady=5)
+    tk.Label(
+        self.root,
+        text="Players, select your grid cells:",
+        font=MEDIUM_FONT,
+    ).pack(pady=5)
 
     # Grid for both players
-    self.grid_frame = tk.Frame(self.root)
-    self.grid_frame.pack()
+    self.grid_frame = tk.Frame(self.root, bg="white")
+    self.grid_frame.pack(pady=10, padx=10)
     create_grid(self, grid_color="lightblue")
 
     # Player Indicator
@@ -72,24 +101,45 @@ def setup_ui(self):
     )
     self.player_indicator.pack(pady=5)
 
-    # Play Button
-    self.play_button = tk.Button(
-        self.root, text="Play", command=lambda: play_game(self)
-    )
-    self.play_button.pack(pady=10)
+    # Play and Reset Buttons Frame
+    button_frame = tk.Frame(self.root)
+    button_frame.pack(pady=10)
 
-    # Reset Button
-    self.reset_button = tk.Button(
-        self.root, text="Reset", command=lambda: reset_game(self)
+    # Play Button with design
+    self.play_button = tk.Button(
+        button_frame,
+        text="Play",
+        command=lambda: play_game(self),
+        font=MEDIUM_FONT,
+        bg="lightblue",
+        fg="black",
     )
-    self.reset_button.pack(pady=10)
+    self.play_button.pack(side=tk.LEFT)
+
+    # Reset Button with design
+    self.reset_button = tk.Button(
+        button_frame,
+        text="Reset",
+        command=lambda: reset_game(self),
+        font=MEDIUM_FONT,
+        bg="orange",
+        fg="black",
+    )
+    self.reset_button.pack(side=tk.LEFT)
 
     # Result Display
     self.result_label = tk.Label(self.root, text="", font=MEDIUM_FONT)
     self.result_label.pack(pady=5)
 
-    # Quit Button
-    tk.Button(self.root, text="Quit", command=self.root.quit).pack(pady=5)
+    # Quit Button with design
+    tk.Button(
+        self.root,
+        text="Quit",
+        command=self.root.quit,
+        font=MEDIUM_FONT,
+        bg="red",
+        fg="white",
+    ).pack(pady=5)
 
 
 def update_grid_size(self):
@@ -126,16 +176,30 @@ def create_grid(self, grid_color="SystemButtonFace"):
         widget.destroy()
     self.buttons = []
 
-    # Create row and column labels
+    # Create row and column labels with design
     for row in range(self.grid_size + 1):
         row_buttons = []
         for col in range(self.grid_size + 1):
             if row == 0 and col == 0:
-                label = tk.Label(self.grid_frame, text="")
+                label = tk.Label(self.grid_frame, text="", bg="white")
             elif row == 0:
-                label = tk.Label(self.grid_frame, text=str(col - 1))
+                label = tk.Label(
+                    self.grid_frame,
+                    text=str(col - 1),
+                    font=MEDIUM_FONT,
+                    bg="lightgrey",
+                    padx=10,
+                    pady=5,
+                )
             elif col == 0:
-                label = tk.Label(self.grid_frame, text=str(row - 1))
+                label = tk.Label(
+                    self.grid_frame,
+                    text=str(row - 1),
+                    font=MEDIUM_FONT,
+                    bg="lightgrey",
+                    padx=10,
+                    pady=5,
+                )
             else:
                 button = tk.Button(
                     self.grid_frame,
@@ -143,12 +207,13 @@ def create_grid(self, grid_color="SystemButtonFace"):
                     width=4,
                     height=2,
                     bg=grid_color,
+                    font=MEDIUM_FONT,
                     command=lambda r=row - 1, c=col - 1: select_cell(self, r, c),
                 )
-                button.grid(row=row, column=col)
+                button.grid(row=row, column=col, padx=5, pady=5)
                 row_buttons.append(button)
                 continue
-            label.grid(row=row, column=col)
+            label.grid(row=row, column=col, padx=5, pady=5)
         if row > 0:
             self.buttons.append(row_buttons)
 
@@ -194,14 +259,6 @@ def play_game(self):
             f"Payoff -> Player 1: {payoff[0]}%, Player 2: {payoff[1]}%\n"
         )
 
-        # Show player choices
-        self.buttons[self.player1_choice[0]][self.player1_choice[1]].config(
-            bg=COLOR_PLAYER1
-        )
-        self.buttons[self.player2_choice[0]][self.player2_choice[1]].config(
-            bg=COLOR_PLAYER2
-        )
-
         # Determine the winner
         if payoff[0] > payoff[1]:
             result_text += "Winner: Player 1"
@@ -235,4 +292,17 @@ def reset_game(self):
     )
     for row in range(self.grid_size):
         for col in range(self.grid_size):
-            self.buttons[row][col].config(bg=self.grid_color, state=tk.NORMAL)
+            self.buttons[row][col].config(
+                bg=self.grid_color,
+                state=tk.NORMAL,
+                image="",
+                compound="none",
+                width=4,
+                height=2,
+            )
+
+
+def resource_path(relative_path):
+    # Get the absolute path to resources
+    base_path = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
