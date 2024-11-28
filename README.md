@@ -5,7 +5,7 @@
 Treasure Hunt Duel is a two-player game where players search for treasure hidden in a grid. Each player selects a grid cell simultaneously, and the game determines the payoff based on their choices and proximity to the treasure.
 
 ![Python Version](https://img.shields.io/badge/Python-%3E%3D3.10-3776AB?style=for-the-badge&logo=python)
-![Status](https://img.shields.io/badge/Status-Ongoing-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen?style=for-the-badge)
 
 ---
 
