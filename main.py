@@ -8,6 +8,7 @@ class TreasureHuntGame:
         self.root = tk.Tk()
         self.root.title("Treasure Hunt Duel")
         self.root.geometry("400x800")
+        self.root.iconbitmap("TreasureHunt.ico")
         self.grid_size = 3
         self.grid_color = "lightblue"  # Initialize grid_color
         self.treasure_location = (
