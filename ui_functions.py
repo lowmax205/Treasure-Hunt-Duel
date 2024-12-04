@@ -7,11 +7,12 @@ import sys
 import os
 
 # Constants
-LARGE_FONT = ("Helvetica", 16, "bold")
-MEDIUM_FONT = ("Helvetica", 12)
+LARGE_FONT = ("Helvetica", 14, "bold")
+MEDIUM_FONT = ("Helvetica", 11)
 SMALL_FONT = ("Helvetica", 10)
 COLOR_PLAYER1 = "blue"
 COLOR_PLAYER2 = "red"
+TREASURE = "yellow"
 
 
 def show_instructions(self):
@@ -45,7 +46,7 @@ def setup_ui(self):
         font=LARGE_FONT,
         fg="gold",
         bg="darkblue",
-    ).pack(pady=10)
+    ).pack()
 
     # Description Label
     tk.Label(
@@ -54,7 +55,7 @@ def setup_ui(self):
         font=MEDIUM_FONT,
         wraplength=380,
         justify="center",
-    ).pack(pady=5)
+    ).pack()
 
     # Instructions Button with design
     tk.Button(
@@ -64,12 +65,12 @@ def setup_ui(self):
         font=MEDIUM_FONT,
         bg="lightgreen",
         fg="black",
-    ).pack(anchor=tk.NE, padx=10, pady=10)
+    ).pack(anchor=tk.NE, padx=2, pady=2)
 
     # Mode Selection
     mode_frame = tk.Frame(self.root, bg="lightgrey")
     mode_frame.pack(pady=5, anchor=tk.CENTER, expand=True)
-    tk.Label(mode_frame, text="Select Mode:", font=MEDIUM_FONT).pack(pady=5)
+    tk.Label(mode_frame, text="Select Mode:", font=MEDIUM_FONT).pack()
     self.mode_var = tk.StringVar(value="Classic")
     modes = ["Classic", "Advanced"]
     for mode in modes:
@@ -88,11 +89,11 @@ def setup_ui(self):
         self.root,
         text="Players, select your grid cells:",
         font=MEDIUM_FONT,
-    ).pack(pady=5)
+    ).pack()
 
     # Grid for both players
     self.grid_frame = tk.Frame(self.root, bg="white")
-    self.grid_frame.pack(pady=10, padx=10)
+    self.grid_frame.pack(pady=5, padx=5)
     create_grid(self, grid_color="lightblue")
 
     # Player Indicator
@@ -188,7 +189,7 @@ def create_grid(self, grid_color="SystemButtonFace"):
                     text=str(col - 1),
                     font=MEDIUM_FONT,
                     bg="lightgrey",
-                    padx=10,
+                    padx=5,
                     pady=5,
                 )
             elif col == 0:
@@ -197,8 +198,8 @@ def create_grid(self, grid_color="SystemButtonFace"):
                     text=str(row - 1),
                     font=MEDIUM_FONT,
                     bg="lightgrey",
-                    padx=10,
-                    pady=5,
+                    padx=2,
+                    pady=2,
                 )
             else:
                 button = tk.Button(
@@ -210,10 +211,10 @@ def create_grid(self, grid_color="SystemButtonFace"):
                     font=MEDIUM_FONT,
                     command=lambda r=row - 1, c=col - 1: select_cell(self, r, c),
                 )
-                button.grid(row=row, column=col, padx=5, pady=5)
+                button.grid(row=row, column=col, padx=2, pady=2)
                 row_buttons.append(button)
                 continue
-            label.grid(row=row, column=col, padx=5, pady=5)
+            label.grid(row=row, column=col, padx=2, pady=2)
         if row > 0:
             self.buttons.append(row_buttons)
 
@@ -253,9 +254,9 @@ def play_game(self):
             self.player1_choice, self.player2_choice, self.mode_var.get()
         )
         result_text = (
-            f"Treasure is at: {self.treasure_location}\n"
-            f"Player 1 chose: {self.player1_choice}\n"
-            f"Player 2 chose: {self.player2_choice}\n"
+            f"{TREASURE} 🥇Treasure is at: {self.treasure_location}\n"
+            f"{COLOR_PLAYER1} 🧑Player 1 chose: {self.player1_choice}\n"
+            f"{COLOR_PLAYER2} 🧔Player 2 chose: {self.player2_choice}\n"
             f"Payoff -> Player 1: {payoff[0]}%, Player 2: {payoff[1]}%\n"
         )
 
@@ -268,6 +269,17 @@ def play_game(self):
             result_text += "It's a tie!"
 
         self.result_label.config(text=result_text)
+
+        # Highlight the chosen cells and the treasure location
+        self.buttons[self.player1_choice[0]][self.player1_choice[1]].config(
+            bg=COLOR_PLAYER1
+        )
+        self.buttons[self.player2_choice[0]][self.player2_choice[1]].config(
+            bg=COLOR_PLAYER2
+        )
+        self.buttons[self.treasure_location[0]][self.treasure_location[1]].config(
+            bg=TREASURE
+        )
 
         # Make play button unclickable
         self.play_button.config(state=tk.DISABLED)
