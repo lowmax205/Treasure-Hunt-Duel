@@ -20,13 +20,13 @@ class TreasureHuntGame:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Treasure Hunt Duel")
-        self.root.geometry("600x900")
+        self.root.geometry("400x700")
         self.root.iconbitmap(icon_path)
 
         # Load and resize the background image
         bg_image_path = resource_path("assets/bg_game.png")
         self.bg_image_original = Image.open(bg_image_path)
-        self.bg_image = self.bg_image_original.resize((400, 800), Image.LANCZOS)
+        self.bg_image = self.bg_image_original.resize((400, 700), Image.LANCZOS)
         self.bg_photo = ImageTk.PhotoImage(self.bg_image)
 
         self.bg_label = tk.Label(self.root, image=self.bg_photo)
@@ -50,7 +50,7 @@ class TreasureHuntGame:
         self.player2_clicked = False
 
         setup_ui(self)
-        self.bg_label.lower()  # Ensure the background is behind all other widgets
+        self.bg_label.lower()
 
     def on_resize(self, event):
         if self.resize_id is not None:
